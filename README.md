@@ -1,3 +1,5 @@
+https://user-images.githubusercontent.com/71657988/224712437-649b08f6-aceb-4b52-a19e-db82363f44b9.mp4
+
 TECHNICAL TASK
 
 It is necessary to create a simulation model of the operating system and implement the following points:
