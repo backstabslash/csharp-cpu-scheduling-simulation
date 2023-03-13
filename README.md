@@ -1,65 +1,63 @@
 https://user-images.githubusercontent.com/71657988/224712437-649b08f6-aceb-4b52-a19e-db82363f44b9.mp4
 
-TECHNICAL TASK
+TECHNICAL ASSIGNMENT
 
-It is necessary to create a simulation model of the operating system and implement the following points:
+The task at hand entails crafting a simulation model for the operating system, and carrying out the following tasks:
 
-• Generation of processes with the appropriate characteristics specified at the start of the model;
+• Generate processes that exhibit specific traits, as defined at the commencement of the model.
 
-• Process scheduler with HPF algorithm based on an array of queues (simplified hashing);
+• Build a process scheduler that utilizes the HPF algorithm and an array of queues, leveraging simplified hashing techniques.
 
-• Device schedulers;
+• Construct device schedulers, and implement device queues for seamless integration.
 
-• Device queues;
+• Design and deploy a memory scheduler, along with a comprehensive memory management system.
 
-• Memory and memory scheduler;
+• Integrate an intuitive graphical user interface, complete with customizable system settings and real-time statistical tracking capabilities.
 
-• Graphical user interface with the ability to set the initial system settings and display statistics.
-
-DESCRIPTION OF THE DEVELOPED CLASSES
+DEVELOPED CLASSES DESCRIPTION
 
 CPU
 
-This class has two fields: a resource (Resource) and a queue of ready processes (IQueueable<Process>). It also has a Session method, which implements the HPF scheduling algorithm based on an array of queues (simplified hashing): the process with the highest priority is taken from the queues of ready actions.
+The CPU class comprises of two core elements: a resource component (Resource) and a ready process queue (IQueueable<Process>). In addition, it features a Session method that executes the HPF scheduling algorithm, employing an array of queues that employ simplified hashing. Under this algorithm, the CPU selects the highest priority process from the queue of ready actions.
 
-QUEUE OF READY PROCESSES
+READY PROCESS QUEUE
 
-In the implemented model for storing and interacting with processes, the QueueArray class was created, in which a FIFO (first in - first out) array was declared, in which processes fell depending on the value of their Priority field, which, in turn, was assigned to them randomly in the range from 0 to MaxPriority when they are created; “MaxPriority” is set by the user when working with the model (but not more than 20).
+In the implemented model that facilitates the storage and interaction with processes, the QueueArray class was developed. This class is equipped with a FIFO (first in, first out) array that processes are placed in, depending on the value of their Priority field. This Priority value is randomly assigned to them upon their creation, and falls within the range of 0 to MaxPriority. The MaxPriority value is predetermined by the user while working with the model, but is limited to a maximum of 20.
 
-The processor got the process from the queue with the highest priority, but not any one, but the one that arrived in the queue before the others.
+When selecting a process from the queue of ready actions, the CPU doesn't simply pick any process. Rather, it selects the process that arrived in the queue before the others, and which holds the highest priority.
 
 RESOURCE
 
-The resource class acts as the device that the process hits. That is. the objects of this class are the central processing unit and external devices. Every cycle, the WorkingCycle method is called for all devices, which, in turn, calls the IncreaseWorkTime method for the processes located on them. If there are none, this cycle device is idle.
+The Resource class serves as the device that processes interact with, including the central processing unit and external devices. Each cycle, the WorkingCycle method is invoked for all devices, which then calls the IncreaseWorkTime method for any processes associated with them. If no processes are present, the device remains idle during this cycle.
 
 PROCESS
 
-The process class contains the fields: sequence number or id (int), name (String), execution time (int), amount of memory allocated for it (int), time worked on the device (int) and the corresponding priority field. The process also has a status field, which can take the following urgent values:
+The Process class is equipped with several vital fields, including a sequence number or ID (int), name (String), execution time (int), memory allocation (int), time spent on the device (int), and priority field. Additionally, the process features a status field, which can take on any of the following critical values:
 
-• ready – the process is waiting to be placed on the CPU;
+• ready – the process awaits placement on the CPU;
 
-• running – the process is running on the processor or one of the external devices;
+• running – the process executes on the processor or an external device;
 
-• waiting – the process is waiting for one of the external devices;
+• waiting – the process awaits one of the external devices;
 
-• terminated – the process has completed and is ready to be deleted.
+• terminated – the process has completed and is ready for deletion.
 
-This class also implements the IncreaseWorkTime method. During its call, it is checked whether the process has completed on the device. If so, the process randomly selects its status: either it queues up for one of the external devices, or it finishes its job. Otherwise, the time worked on the device is incremented.
+Moreover, the class integrates the IncreaseWorkTime method. When invoked, this method checks whether the process has completed on the device. If so, the process randomly selects its status, either queuing up for one of the external devices or finishing its job. If not, the time spent on the device is incremented.
 
 SETTINGS
 
-At its core, this class describes the future characteristics of all actions. Before running the model, the user selects the values of the settings assigned to the corresponding properties: the frequency of occurrence of new processes (double), the minimum and maximum time spent on the device (int), the minimum and maximum value of the required memory (int), the maximum priority (int), and the size RAM of the model itself (int)
+The Settings class at its core outlines the prospective attributes of all operations. Prior to running the model, users choose the settings assigned to corresponding properties, such as the frequency of new process occurrence (double), minimum and maximum device time (int), minimum and maximum memory allocation (int), maximum priority (int), and the size of the model's RAM (int).
 
 MEMORY
 
-Before starting the simulation, the user specifies the amount of model memory. This value is stored in the storage class. When a process is added to one of the queues, the memory occupied by this process is taken away from the total memory. This value is also a class field.
+Before commencing the simulation, users determine the amount of memory in the model, and this value is stored in the Storage class. When a process is added to one of the queues, the memory occupied by this process is subtracted from the total memory. Furthermore, this value serves as a field in the class.
 
-If the amount of free memory is less than the amount of memory needed to execute a new process, this process becomes the so-called rejected process: it does not fall into any of the queues.
+If the free memory is less than the memory required to execute a new process, this process becomes a rejected process, meaning it does not fall into any of the queues.
 
 MODEL
 
-The main class of the system: almost all other classes of the model are implemented in it. It has the following fields: work cycle counter (SystemClock), processor (Resouce), external devices (Resource), RAM (Memory), queue of ready processes (IQueueble<Process>), queues to external devices (IQueueble<Process>), scheduler processor (CPUScheduler), memory scheduler (MemoryManager), external device schedulers (DeviceScheduler), model settings (Settings) and statistics (Statistics).
+The Model class is the core of the system, and it nearly encompasses all other classes in the model. It contains the following fields: a SystemClock for work cycle counting, a Processor for CPU usage, external devices, RAM, a queue of ready processes (IQueueble<Process>), queues for external devices (IQueueble<Process>), a scheduler processor (CPUScheduler), a memory scheduler (MemoryManager), model settings (Settings), and statistics.
 
-This class implements the WorkingCycle method: a method that simulates the operation of the operating system. It calls the method for sorting the queue of ready processes, generates new processes, increments clock cycles, calls the WorkingCycle methods of the processor and external devices.
+This class incorporates the WorkingCycle method, which simulates the operating system's operation. It sorts the queue of ready processes, generates new processes, increases clock cycles, and calls the WorkingCycle method for the processor and external devices.
 
-Also in the Model class, the FreeingAResourceEventHandler event handler is implemented, which, depending on the status of the process, puts or removes it from the device.
+Furthermore, the Model class has the FreeingAResourceEventHandler event handler, which puts or removes a process from the device based on its status.
